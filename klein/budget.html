@@ -116,35 +116,56 @@
 
         <div class="budget-form">
             <h3>Set Weekly Budget</h3>
-            <form id="budgetForm">
+            <form action="budget.php" method="POST">
                 <div class="mb-3">
-                    <input type="text" id="expenseName" class="form-control" placeholder="Enter Expense Name (e.g., Food, Entertainment)" required>
+                    <input 
+                        type="text" 
+                        id="expenseName" 
+                        name="expenseName" 
+                        class="form-control" 
+                        placeholder="Enter Expense Name (e.g., Food, Entertainment)" 
+                        required>
                 </div>
                 <div class="mb-3">
-                    <input type="number" id="expenseAmount" class="form-control" placeholder="Enter Amount (UGX)" required>
+                    <input 
+                        type="number" 
+                        id="expenseAmount" 
+                        name="expenseAmount" 
+                        class="form-control" 
+                        placeholder="Enter Amount (UGX)" 
+                        required>
+                </div>
+                <div class="mb-3">
+                    <input 
+                        type="hidden" 
+                        id="userId" 
+                        name="userId" 
+                        value="1"> <!-- Replace with dynamic user ID if available -->
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Add Expense</button>
             </form>
         </div>
-
         <div class="expenses-table">
-            <h3>Weekly Expenses</h3>
-            <table id="expensesTable" class="table table-dark table-hover mt-3">
-                <thead>
-                    <tr>
-                        <th>Expense Name</th>
-                        <th>Amount (UGX)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            
+                <h3>Weekly Budget</h3>
+                <table id="expensesTable" class="table table-dark table-hover mt-3">
+                    <thead>
+                        <tr>
+                            <th>Expense Name</th>
+                            <th>Amount (UGX)</th>
+                            <th>Date Added</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic data will populate here -->
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
-    </div>
-
-    <footer>
-        &copy; 2024 FineSente. All Rights Reserved.
-    </footer>
+        
+                
+   
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -163,6 +184,36 @@
 
             budgetForm.reset();
         });
+      // Fetch budget data and populate the table
+async function fetchBudgetData() {
+    try {
+        const response = await fetch('fetch_budget.php');
+        const data = await response.json();
+
+        if (data.success) {
+            const budgetTableBody = document.getElementById('expensesTable').querySelector('tbody');
+            budgetTableBody.innerHTML = data.budget.map(item => `
+                <tr>
+                    <td>${item.expense_name}</td>
+                    <td>UGX ${parseFloat(item.amount).toLocaleString()}</td>
+                    <td>${new Date(item.created_at).toLocaleString()}</td>
+                </tr>
+            `).join('');
+        } else {
+            console.error("Failed to fetch budget data:", data.message);
+        }
+    } catch (error) {
+        console.error("Error fetching budget data:", error);
+    }
+}
+
+// Run fetchBudgetData on page load
+document.addEventListener("DOMContentLoaded", fetchBudgetData);
+
     </script>
+         
+         <footer>
+            &copy; 2024 FineSente. All Rights Reserved.
+        </footer>
 </body>
 </html>
