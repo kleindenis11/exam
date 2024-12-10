@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FineSente - Help & Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #000000;
+            color: #f1f1f1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: #1c1c3c;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar h2 {
+            color: #007bff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: #f1f1f1;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            color: #007bff;
+        }
+
+        .logout {
+            margin-top: 30px;
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .logout:hover {
+            color: #0056b3;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            flex-grow: 1;
+            box-sizing: border-box;
+            width: 100%;
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .main-content .toggle-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1500;
+        }
+
+        .main-content .toggle-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            color: #007bff;
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.6rem;
+            color: #007bff;
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        /* Help Section */
+        .help-section {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .help-section p {
+            margin-bottom: 20px;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-item h4 {
+            color: #007bff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .faq-item p {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .contact-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1c1c3c;
+            color: #a1a1a1;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.9rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <br><br>
+            <li><a href="dash.html">Dashboard</a></li>
+            <li><a href="userprofile.html">My Profile</a></li>
+            <li><a href="addexpense.html">Add Expense</a></li>
+            <li><a href="budget.html">Budget</a></li>
+            <li><a href="report.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+        <a href="logout.html" class="logout">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+
+        <div class="logo">
+            <img src="th.jpg" alt="FineSente Logo">
+            <h1>FineSente</h1>
+        </div>
+
+        <!-- Help Section -->
+        <div class="help-section">
+            <div class="section-title">Help & Support</div>
+
+            <div class="faq-item">
+                <h4>How do I add an expense?</h4>
+                <p>To log an expense, go to the 'Add Expense' page, complete the necessary fields such as amount, category, and description, and then select 'Save'.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>How do I set a budget?</h4>
+                <p>You can set a budget by navigating to the 'Budget' page, then entering a category and amount in the form. Once submitted, your budget will be saved.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>How do I view my reports?</h4>
+                <p>Your reports can be viewed under the 'Reports' section. It shows a summary of your expenses, categories, and budget performance over time.</p>
+            </div>
+
+            <div class="section-title">Contact Support</div>
+            <div class="contact-form">
+                <h3>Contact Us</h3>
+                <form action="#">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea rows="4" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2024 FineSente. All Rights Reserved.
+        </footer>
+
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense - FineSente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+        .sidebar {
+            background-color: #1f1f1f;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+        .sidebar h2 {
+            color: #0d6efd;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            color: #f1f1f1;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            color: #0d6efd;
+        }
+        .logout {
+            margin-top: 30px;
+            display: block;
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        .logout:hover {
+            color: #0a58ca;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #0d6efd;
+        }
+        .budget-form {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+        .budget-form input, .budget-form button {
+            margin-bottom: 10px;
+            color: #f1f1f1;
+        }
+        .budget-form button {
+            background-color: #0d6efd;
+            border: none;
+        }
+        .budget-form button:hover {
+            background-color: #0a58ca;
+        }
+        footer {
+            background-color: #1f1f1f;
+            color: #a1a1a1;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>FineSente</h2>
+        <ul>
+            <li><a href="dash.html">Dashboard</a></li>
+            <li><a href="userprofile.html">My Profile</a></li>
+            <li><a href="addexpense.html" class="active">Add Expense</a></li>
+            <li><a href="report.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="help.html">Help/Support</a></li>
+        </ul>
+        <a href="logout.html" class="logout">Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Weekly budget</h1>
+        </div>
+
+        <div class="budget-form">
+            <h3>Set Weekly Budget</h3>
+            <form id="budgetForm">
+                <div class="mb-3">
+                    <input type="text" id="expenseName" class="form-control" placeholder="Enter Expense Name (e.g., Food, Entertainment)" required>
+                </div>
+                <div class="mb-3">
+                    <input type="number" id="expenseAmount" class="form-control" placeholder="Enter Amount (UGX)" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Add Expense</button>
+            </form>
+        </div>
+
+        <div class="expenses-table">
+            <h3>Weekly Expenses</h3>
+            <table id="expensesTable" class="table table-dark table-hover mt-3">
+                <thead>
+                    <tr>
+                        <th>Expense Name</th>
+                        <th>Amount (UGX)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 FineSente. All Rights Reserved.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const budgetForm = document.getElementById('budgetForm');
+        const expensesTable = document.getElementById('expensesTable').querySelector('tbody');
+
+        budgetForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const expenseName = document.getElementById('expenseName').value;
+            const expenseAmount = document.getElementById('expenseAmount').value;
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `<td>${expenseName}</td><td>${Number(expenseAmount).toLocaleString()}</td>`;
+            expensesTable.appendChild(newRow);
+
+            budgetForm.reset();
+        });
+    </script>
+</body>
+</html>
