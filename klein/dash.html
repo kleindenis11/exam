@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +9,8 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #212529;
-            color: #f8f9fa;
+            background-color: #212529; /* Dark theme background */
+            color: #f8f9fa; /* Light text */
         }
         .header {
             background-color: #343a40;
@@ -60,6 +59,10 @@
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
+        .wallet:hover, .summary:hover, .savings:hover, .expense-list:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+        }
         table {
             width: 100%;
             margin-top: 20px;
@@ -100,18 +103,25 @@
         <p>Welcome back!</p>
 
         <div class="dashboard">
+            <!-- Wallet Section -->
             <div class="wallet">
                 <h3>Wallet Balance</h3>
                 <p id="walletBalance">UGX 0</p>
             </div>
+
+            <!-- Savings Section -->
             <div class="savings">
                 <h3>Savings</h3>
                 <p id="savingsBalance">UGX 0</p>
             </div>
+
+            <!-- Summary Section -->
             <div class="summary">
                 <h3>Total Expenditure</h3>
                 <p id="totalExpenditure">UGX 0</p>
             </div>
+
+            <!-- Expense List -->
             <div class="expense-list">
                 <h3>Recent Expenses</h3>
                 <table>
@@ -123,47 +133,57 @@
                             <th>Amount (UGX)</th>
                         </tr>
                     </thead>
-                    <tbody id="expenseList"></tbody>
+                    <tbody id="expenseList">
+                        <!-- Dynamic Data -->
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         &copy; 2024 FineSente. All Rights Reserved.
     </footer>
 
-  <script>function updateDashboard() {
-  function updateDashboard() {
-    fetch('dash.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const { wallet_balance, savings_balance, total_expenditure, recent_expenses } = data.data;
-
-                document.getElementById("walletBalance").textContent = `UGX ${wallet_balance.toLocaleString()}`;
-                document.getElementById("savingsBalance").textContent = `UGX ${savings_balance.toLocaleString()}`;
-                document.getElementById("totalExpenditure").textContent = `UGX ${total_expenditure.toLocaleString()}`;
-
-                const expenseList = document.getElementById("expenseList");
-                expenseList.innerHTML = recent_expenses.map(expense => `
-                    <tr>
-                        <td>${expense.date}</td>
-                        <td>${expense.category}</td>
-                        <td>${expense.description}</td>
-                        <td>UGX ${parseFloat(expense.amount).toLocaleString()}</td>
-                    </tr>
-                `).join("");
-            } else {
-                console.error("Error fetching dashboard data:", data.message);
+    <script>
+        async function updateDashboard() {
+            try {
+                const response = await fetch('dash.php');
+                const result = await response.json();
+        
+                if (result.success) {
+                    const { wallet_balance, savings_balance, total_expenditure, recent_expenses } = result.data;
+        
+                    // Update the dashboard with the fetched data
+                    document.getElementById("walletBalance").textContent = `UGX ${wallet_balance.toLocaleString()}`;
+                    document.getElementById("savingsBalance").textContent = `UGX ${savings_balance.toLocaleString()}`;
+                    document.getElementById("totalExpenditure").textContent = `UGX ${total_expenditure.toLocaleString()}`;
+        
+                    // Populate the recent expenses table
+                    const expenseList = document.getElementById("expenseList");
+                    expenseList.innerHTML = recent_expenses
+                        .map(
+                            expense => `
+                            <tr>
+                                <td>${expense.date}</td>
+                                <td>${expense.category}</td>
+                                <td>${expense.description}</td>
+                                <td>UGX ${parseFloat(expense.amount).toLocaleString()}</td>
+                            </tr>`
+                        )
+                        .join("");
+                } else {
+                    console.error("Failed to load data:", result.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
             }
-        })
-        .catch(error => console.error("Error:", error));
-}
-
-document.addEventListener("DOMContentLoaded", updateDashboard);
-}
-</script>
+        }
+        
+        // Load data on page load
+        document.addEventListener("DOMContentLoaded", updateDashboard);
+        </script>
         
 </body>
 </html>
